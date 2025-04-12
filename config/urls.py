@@ -23,3 +23,8 @@ urlpatterns = [
 ]
 
 
+from django.http import JsonResponse
+
+urlpatterns += [
+    path('', lambda request: JsonResponse({'message': 'Welcome to the Neighborhood Services API 🚀'})),
+]
