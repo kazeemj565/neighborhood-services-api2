@@ -16,15 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('api/', include('services.urls')),
+    path('api/', include('categories.urls')),
 ]
 
 
-from django.http import JsonResponse
 
 urlpatterns += [
     path('', lambda request: JsonResponse({'message': 'Welcome to the Neighborhood Services API 🚀'})),
