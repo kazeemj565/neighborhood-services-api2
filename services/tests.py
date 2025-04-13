@@ -1,10 +1,11 @@
 
-from django.test import TestCase
+from django.test import TestCase, Client
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.urls import reverse
 from users.models import User
 from services.models import Service, Category
+from django.contrib.auth.models import User
 
 
 class ServiceTests(TestCase):
@@ -104,3 +105,31 @@ class ServiceTests(TestCase):
         response = self.client.delete(self.service_detail_url(service.id))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Service.objects.count(), 0)
+
+
+class ServiceSearchFilterTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username="testuser", password="pass")
+        self.cat1 = Category.objects.create(name="Plumbing")
+        self.cat2 = Category.objects.create(name="Electrical")
+
+        Service.objects.create(title="Fix pipes", description="Pipe work", price=100, category=self.cat1,
+                               owner=self.user, location="Lagos", availability=True)
+        Service.objects.create(title="Install wires", description="Electrical wiring", price=150, category=self.cat2,
+                               owner=self.user, location="Abuja", availability=True)
+
+    def test_search_by_keyword(self):
+        response = self.client.get("/api/services/search/?query=pipe")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(any("pipe" in s["title"].lower() for s in response.json()))
+
+    def test_filter_by_location(self):
+        response = self.client.get("/api/services/filter/?location=Lagos")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(all(s["location"] == "Lagos" for s in response.json()))
+
+    def test_filter_by_category(self):
+        response = self.client.get(f"/api/services/filter/?category_id={self.cat1.id}")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(all(s["category"] == self.cat1.id for s in response.json()))
