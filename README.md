@@ -1,165 +1,271 @@
-# neighborhood-services-api2
-
-Sure, here's a complete `README.md` content based on **all your implementations so far** for the **Neighborhood Services API** project:
-
----
 
 ```markdown
 # 🏘️ Neighborhood Services API
 
-The **Neighborhood Services API** is a Django RESTful backend application designed to enable users in a local community to **list** and **find service providers** such as electricians, plumbers, tutors, and cleaners. It acts as a **digital noticeboard** for neighborhoods to support local businesses and foster community connections.
+The **Neighborhood Services API** is a Django RESTful backend that enables users in a local community to list and find service providers such as electricians, plumbers, tutors, cleaners, and more. It acts as a digital noticeboard to support local businesses and strengthen community connections.
 
 ---
 
-## 🚀 Features Implemented (Phase 1–5)
+## 🚀 Features
 
-### ✅ User Authentication (Phase 1–3)
-- **User Registration**
-- **JWT-based Login & Logout** (DRF Simple JWT)
-- **User Profile View & Update**
-- Token refresh, rotation, and blacklist implemented
-
-### ✅ Service Listings (Phase 4)
-- Users can create, view, update, and delete services
-- Services belong to both a user and a category
-- Permissions enforced so only owners can edit/delete their services
-- Fields include:
-  - `title`, `description`, `price`, `category`, `location`, `availability`, and timestamps
-
-### ✅ Category Management (Phase 5 - in progress)
-- List all categories (public)
-- Admin-only: Create, Update, Delete categories
-
-### ✅ Search & Filter Services (Phase 5)
-- Search services by keyword in title or description
-- Filter services by category or location
-
-### ✅ Reviews (Phase 6 - in progress)
-- Users can post reviews on services
-- Each review includes: `rating`, `comment`, `service`, `user`
-- Only review authors can update/delete their reviews
-- List all reviews for a service
+- 🔐 JWT Authentication (Register, Login, Logout)
+- 👤 User Profiles (View & Update)
+- 🛠️ Service Listings (CRUD)
+- 🗂️ Category Management (List & Admin-only CRUD)
+- 🔍 Search & Filter Services (by category, location, keyword)
+- ⭐ Favorite Services (Add, Remove, View)
+- 💬 Reviews & Ratings (CRUD per service)
+- 🧪 Comprehensive Unit Tests
 
 ---
 
-## 📦 Project Structure
+## 📁 Project Structure
 
-```
+```bash
 neighborhood-services-api/
-├── users/              # Handles user registration, login, profile
-├── services/           # Service model and CRUD views
-├── categories/         # Admin CRUD for service categories
-├── reviews/            # Reviews system
-├── favorites/          # (Upcoming) Favorite services
-├── search/             # Custom search and filter logic
-├── core/               # Settings, urls, utils
-└── tests/              # Unit tests for each app
+│
+├── users/                # Custom user app (register, login, profile)
+├── services/             # Service listing logic
+├── categories/           # Service categories
+├── reviews/              # Reviews and ratings
+├── favorites/            # Favorite services logic
+├── manage.py
+└── README.md             # You are here!
 ```
 
 ---
 
-## 🧪 Tests
+## 🧰 Tech Stack
 
-- Unit tests written using `django.test.TestCase`
-- Tests cover:
-  - User registration and login
-  - Service listing CRUD
-  - Category listing and admin actions
-  - Reviews creation and permission enforcement
+- **Backend**: Django, Django REST Framework
+- **Authentication**: JWT (via `djangorestframework-simplejwt`)
+- **Database**: PostgreSQL (or SQLite for local dev)
+- **Testing**: Django TestCase
 
-Run all tests with:
+---
+
+## ⚙️ Setup Instructions
+
+1. **Clone the repository**
 ```bash
-python manage.py test
-```
-
----
-
-## 📄 API Endpoints Overview
-
-### 🔐 Auth Endpoints
-| Method | Route | Description |
-|--------|-------|-------------|
-| POST   | `/api/users/register/` | Register new user |
-| POST   | `/api/users/login/`    | Login and receive JWT |
-| POST   | `/api/token/refresh/`  | Refresh access token |
-| GET    | `/api/users/profile/`  | View user profile |
-| PUT    | `/api/users/profile/update/` | Update user profile |
-
-### 🛠️ Service Endpoints
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET    | `/api/services/`             | List all services |
-| GET    | `/api/services/<id>/`        | View specific service |
-| POST   | `/api/services/create/`      | Create a new service |
-| PUT    | `/api/services/<id>/update/` | Update user's own service |
-| DELETE | `/api/services/<id>/delete/` | Delete user's own service |
-
-### 📂 Category Endpoints
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET    | `/api/categories/`             | List all categories |
-| POST   | `/api/categories/`             | Add new category (admin) |
-| PUT    | `/api/categories/<id>/`        | Update category (admin) |
-| DELETE | `/api/categories/<id>/`        | Delete category (admin) |
-
-### 🔎 Search & Filter
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET    | `/api/services/search/?query=<keyword>` | Search by keyword |
-| GET    | `/api/services/filter/?category_id=&location=` | Filter by category/location |
-
-### ⭐ Review Endpoints
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET    | `/api/services/<service_id>/reviews/`        | List all reviews for a service |
-| POST   | `/api/services/<service_id>/reviews/create/` | Post a new review |
-| PUT    | `/api/reviews/<id>/update/`                  | Update a review (owner only) |
-| DELETE | `/api/reviews/<id>/delete/`                  | Delete a review (owner only) |
-
----
-
-## ⚙️ Technologies Used
-
-- Python 3.12+
-- Django 5.x
-- Django REST Framework
-- Simple JWT (for authentication)
-- PostgreSQL (default database)
-- SQLite (for local development)
-- Docker (optional for deployment)
-- Supabase (remote database testing)
-
----
-
-## 🗂️ Environment Setup
-
-```bash
-git clone https://github.com/yourusername/neighborhood-services-api.git
+git clone https://github.com/your-username/neighborhood-services-api.git
 cd neighborhood-services-api
+```
+
+2. **Create virtual environment**
+```bash
 python -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+```
 
-# Set up .env variables (DB credentials, SECRET_KEY, etc.)
-# Then run migrations:
+3. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+4. **Run migrations**
+```bash
 python manage.py makemigrations
 python manage.py migrate
+```
 
-# Run the dev server
+5. **Create superuser**
+```bash
+python manage.py createsuperuser
+```
+
+6. **Run the server**
+```bash
 python manage.py runserver
 ```
 
 ---
 
-## 📌 Roadmap
+## 🔐 Authentication
 
-- [x] Phase 1–3: Auth + Profiles
-- [x] Phase 4: Service Listings
-- [x] Phase 5: Categories + Search
-- [x] Phase 6: Reviews
-- [ ] Phase 7: Favorites
-- [ ] Phase 8: Geolocation support (Google Maps)
-- [ ] Phase 9: Deployment & Documentation Finalization
+- **Login** with `username` and `password` to receive an access and refresh token.
+- Add this access token to your headers:  
+  `Authorization: Bearer <your_access_token>`
+
+---
+
+## 📮 API Endpoints
+
+---
+
+### 1. 🧑 User Endpoints
+
+#### 🔸 Register
+**POST** `/api/users/register/`  
+Request:
+```json
+{
+  "username": "john",
+  "email": "john@example.com",
+  "password": "12345678"
+}
+```
+
+#### 🔸 Login
+**POST** `/api/users/login/`  
+Request:
+```json
+{
+  "username": "john",
+  "password": "12345678"
+}
+```
+Response:
+```json
+{
+  "access": "<JWT_TOKEN>",
+  "refresh": "<JWT_REFRESH>"
+}
+```
+
+#### 🔸 Profile
+**GET** `/api/users/profile/`  
+**PUT** `/api/users/profile/update/`  
+Headers: `Authorization: Bearer <token>`
+
+---
+
+### 2. 📦 Category Endpoints
+
+#### 🔸 List Categories
+**GET** `/api/categories/`
+
+#### 🔸 Add Category (Admin Only)
+**POST** `/api/categories/`  
+```json
+{
+  "name": "Plumbing"
+}
+```
+
+#### 🔸 Update / Delete Category
+**PUT** `/api/categories/<id>/`  
+**DELETE** `/api/categories/<id>/`
+
+---
+
+### 3. 🛠️ Service Endpoints
+
+#### 🔸 List All Services
+**GET** `/api/services/`
+
+#### 🔸 View Single Service
+**GET** `/api/services/<id>/`
+
+#### 🔸 Create Service
+**POST** `/api/services/create/`  
+```json
+{
+  "title": "Plumbing Help",
+  "description": "Experienced plumber available",
+  "price": 50,
+  "location": "Kaduna",
+  "availability": "Available weekdays",
+  "category": 1
+}
+```
+
+#### 🔸 Update / Delete Service
+**PUT** `/api/services/<id>/update/`  
+**DELETE** `/api/services/<id>/delete/`
+
+---
+
+### 4. 🔍 Search & Filter
+
+#### 🔸 Search
+**GET** `/api/services/search/?query=plumber`
+
+#### 🔸 Filter
+**GET** `/api/services/filter/?category_id=1&location=Kaduna`
+
+---
+
+### 5. 💬 Review Endpoints
+
+#### 🔸 List Reviews for a Service
+**GET** `/api/services/<service_id>/reviews/`
+
+#### 🔸 Create Review
+**POST** `/api/services/<service_id>/reviews/create/`  
+```json
+{
+  "rating": 4,
+  "comment": "Very professional service."
+}
+```
+
+#### 🔸 Update / Delete Review
+**PUT** `/api/reviews/<id>/update/`  
+**DELETE** `/api/reviews/<id>/delete/`
+
+---
+
+### 6. ⭐ Favorites Endpoints
+
+#### 🔸 Add Favorite
+**POST** `/api/favorites/add/`  
+```json
+{
+  "service_id": 1
+}
+```
+
+#### 🔸 List Favorites
+**GET** `/api/favorites/`
+
+#### 🔸 Remove Favorite
+**DELETE** `/api/favorites/remove/`  
+```json
+{
+  "service_id": 1
+}
+```
+
+---
+
+## 🧪 Running Tests
+
+```bash
+python manage.py test
+```
+
+Unit tests are implemented using Django's `TestCase` framework for:
+- User Auth & Profiles
+- Service CRUD & Filtering
+- Categories (Admin-only)
+- Reviews (per-service)
+- Favorites (Add, View, Remove)
+
+---
+
+## 📌 Entity Relationships
+
+- **User ↔ Service**: One-to-Many
+- **Service ↔ Category**: Many-to-One
+- **User ↔ Review**: One-to-Many
+- **Service ↔ Review**: One-to-Many
+- **User ↔ FavoriteService**: Many-to-Many
+
+---
+
+## ✨ Roadmap
+
+- [x] JWT Authentication
+- [x] CRUD for services
+- [x] Category Admin management
+- [x] Reviews and Ratings
+- [x] Favorites feature
+- [ ] Geolocation support (Google Maps API)
+- [ ] Admin moderation tools
+- [ ] Profile photo upload
+
+---
 
 ---
 
@@ -170,10 +276,15 @@ This project was built as part of a capstone to demonstrate Django API developme
 
 ---
 
-## 📜 License
+## 👨‍💻 Author
 
-MIT License – free for personal or commercial use.
-```
+**Kazeem Jamiu Shina**  
+Backend Developer | Capstone Project – ALX Software Engineering Program  
+[LinkedIn](#) • [GitHub](#)
 
 ---
 
+## 📝 License
+
+MIT License. Feel free to fork, contribute, or adapt for your local community!
+```
