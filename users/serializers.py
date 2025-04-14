@@ -15,6 +15,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'gender', 'religion', 'language', 'bio']
+        read_only_fields = ['username', 'email']
+
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
@@ -29,3 +37,6 @@ class LoginSerializer(serializers.Serializer):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }
+
+
+
