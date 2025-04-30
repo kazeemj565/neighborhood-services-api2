@@ -40,3 +40,7 @@ class FavoriteServiceTestCase(TestCase):
         response = self.client.delete("/api/favorites/remove/", {"service_id": self.service.id}, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(FavoriteService.objects.filter(user=self.user, service=self.service).exists())
+
+
+
+
