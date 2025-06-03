@@ -42,7 +42,6 @@ class LoginView(generics.GenericAPIView):
 
 
 
-# user/views.py
 class ProfileView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
@@ -76,3 +75,5 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+

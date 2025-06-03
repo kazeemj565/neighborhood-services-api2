@@ -27,6 +27,20 @@ SECRET_KEY = 'django-insecure-5$vln2=%i0)x+8s-%5ow%i!@k+z=@z*4p&+ufg@p9d@e==##41
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# LOGGING = {
+#     'version': 1,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'root': {
+#         'handlers': ['console'],
+#         'level': 'DEBUG',
+#     },
+# }
+
+
 ALLOWED_HOSTS = []
 
 
@@ -183,8 +197,8 @@ SIMPLE_JWT = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # default is 5 minutes
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     # default is 1 day
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1440),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,

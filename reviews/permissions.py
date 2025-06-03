@@ -11,4 +11,4 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
             return True
 
         # Only allow author to edit/delete
-        return obj.author == request.user
+        return obj.user == request.user
