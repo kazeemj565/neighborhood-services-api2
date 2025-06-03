@@ -1,4 +1,4 @@
-venv/
 .env
 .github/
 __pycahce__/
+venv/
