@@ -158,7 +158,7 @@ Headers: `Authorization: Bearer <token>`
 **GET** `/api/services/<id>/`
 
 #### 🔸 Create Service
-**POST** `/api/services/create/`  
+**POST** `/api/services/`
 ```json
 {
   "title": "Plumbing Help",
@@ -171,8 +171,8 @@ Headers: `Authorization: Bearer <token>`
 ```
 
 #### 🔸 Update / Delete Service
-**PUT** `/api/services/<id>/update/`  
-**DELETE** `/api/services/<id>/delete/`
+**PUT** `/api/services/<id>/`  
+**DELETE** `/api/services/<id>/`
 
 ---
 
@@ -192,7 +192,7 @@ Headers: `Authorization: Bearer <token>`
 **GET** `/api/services/<service_id>/reviews/`
 
 #### 🔸 Create Review
-**POST** `/api/services/<service_id>/reviews/create/`  
+**POST** `/api/services/<service_id>/reviews/`  
 ```json
 {
   "rating": 4,
@@ -201,8 +201,8 @@ Headers: `Authorization: Bearer <token>`
 ```
 
 #### 🔸 Update / Delete Review
-**PUT** `/api/reviews/<id>/update/`  
-**DELETE** `/api/reviews/<id>/delete/`
+**PUT** `/api/reviews/<id>/`  
+**DELETE** `/api/reviews/<id>/`
 
 ---
 
@@ -212,7 +212,7 @@ Headers: `Authorization: Bearer <token>`
 **POST** `/api/favorites/add/`  
 ```json
 {
-  "service_id": 1
+  "service": 1
 }
 ```
 
@@ -220,10 +220,10 @@ Headers: `Authorization: Bearer <token>`
 **GET** `/api/favorites/`
 
 #### 🔸 Remove Favorite
-**DELETE** `/api/favorites/remove/`  
+**DELETE** `/api/favorites/id/delete/`  
 ```json
 {
-  "service_id": 1
+  "service": 1
 }
 ```
 
