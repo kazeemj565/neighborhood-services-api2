@@ -63,6 +63,13 @@ INSTALLED_APPS = [
     'favorites',
 ]
 
+INSTALLED_APPS += ["corsheaders"]
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 
 MIDDLEWARE = [
@@ -74,6 +81,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MIDDLEWARE = ["corsheaders.middleware.CorsMiddleware"] + MIDDLEWARE
 
 ROOT_URLCONF = 'config.urls'
 
@@ -204,3 +213,4 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': False,
 
 }
+
