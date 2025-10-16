@@ -18,14 +18,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'gender', 'religion', 'language', 'bio']
+        fields = [
+            'username', 'email',
+            'first_name', 'last_name',
+            'gender', 'religion', 'language', 'bio'
+        ]
         read_only_fields = ['username', 'email']
 
     def normalize_string_field(self, value, field_name=None, valid_choices=None):
-        """
-        Normalize input by stripping spaces and lowercasing.
-        Optionally validate against a set of valid choices.
-        """
+        """Normalize and validate string fields."""
         if not isinstance(value, str):
             return value
         normalized = value.strip().lower()
@@ -35,19 +36,23 @@ class ProfileSerializer(serializers.ModelSerializer):
             )
         return normalized
 
-    def to_internal_value(self, data):
-        data = data.copy()
-
-        if 'gender' in data:
-            data['gender'] = self.normalize_string_field(
-                data['gender'], field_name='gender', valid_choices=['male', 'female', 'other']
+    def update(self, instance, validated_data):
+        # Normalize string-based fields
+        if 'gender' in validated_data:
+            validated_data['gender'] = self.normalize_string_field(
+                validated_data['gender'], field_name='gender',
+                valid_choices=['male', 'female', 'other']
             )
-        if 'language' in data:
-            data['language'] = self.normalize_string_field(data['language'])
-        if 'religion' in data:
-            data['religion'] = self.normalize_string_field(data['religion'])
+        if 'language' in validated_data:
+            validated_data['language'] = self.normalize_string_field(validated_data['language'])
+        if 'religion' in validated_data:
+            validated_data['religion'] = self.normalize_string_field(validated_data['religion'])
 
-        return super().to_internal_value(data)
+        # Update normal user fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 
 

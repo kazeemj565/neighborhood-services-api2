@@ -61,7 +61,7 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
         user = self.get_object()
         user.delete()
         return Response({
-            "message": "Profile deleted successfully."
+            "message": "Account deactivated successfully."
         }, status=status.HTTP_204_NO_CONTENT)
 
 class LogoutView(APIView):

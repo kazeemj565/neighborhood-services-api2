@@ -124,10 +124,21 @@ Response:
 ```
 
 #### 🔸 Profile
-**GET** `/api/users/profile/`  
-**PUT** `/api/users/profile/update/`  
+**GET** `/api/profile/`  
+**PUT** `/api/profile/update/`  
 Headers: `Authorization: Bearer <token>`
-
+Request:
+```json
+{
+  "first_name": "Jamiu",
+  "last_name": "Kazeem",
+  "email": "jamiu@example.com",
+  "gender": "male",
+  "religion": "Islam",
+  "language": "Yoruba",
+  "bio": "A skilled service provider passionate about local tech solutions.",
+  "is_service_provider": true
+}
 ---
 
 ### 2. 📦 Category Endpoints

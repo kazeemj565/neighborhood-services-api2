@@ -36,3 +36,5 @@ class CategoryViewSet(viewsets.ModelViewSet):
             "message": "Category deleted successfully."
         }, status=status.HTTP_204_NO_CONTENT)
 
+
+

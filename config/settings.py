@@ -49,6 +49,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django_extensions',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -213,4 +214,7 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': False,
 
 }
+
+
+
 

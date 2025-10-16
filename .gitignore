@@ -2,3 +2,6 @@
 .github/
 __pycahce__/
 venv/
+payload.json
+work.py
+main.py
