@@ -5,9 +5,9 @@
 
 // export default function ProfilePage() {
 //   const [profile, setProfile] = useState<any>(null);
-//   const [isEditing, setIsEditing] = useState(false);
 //   const [message, setMessage] = useState('');
 //   const [error, setError] = useState('');
+//   const [isFading, setIsFading] = useState(false);
 
 //   const [formData, setFormData] = useState({
 //     first_name: '',
@@ -16,12 +16,14 @@
 //     religion: '',
 //     language: '',
 //     bio: '',
+//     avatar: null as File | null,
 //   });
 
 //   useEffect(() => {
 //     const fetchProfile = async () => {
 //       const token = localStorage.getItem('access');
 //       if (!token) {
+//         window.location.href= '/login';
 //         setMessage('You must be logged in to view your profile.');
 //         return;
 //       }
@@ -43,7 +45,6 @@
 //         setError('Failed to fetch profile.');
 //       }
 //     };
-
 //     fetchProfile();
 //   }, []);
 
@@ -53,40 +54,67 @@
 //     setFormData({ ...formData, [e.target.name]: e.target.value });
 //   };
 
+// // ✅ Avatar preview handler
+//   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     if (e.target.files && e.target.files[0]) {
+//       const file = e.target.files[0];
+//       setFormData({ ...formData, avatar: file });
+//       setPreview(URL.createObjectURL(file)); // for live preview
+//     }
+//   };
+
+
+//   // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//   //   if (e.target.files && e.target.files[0]) {
+//   //     const formData = new FormData();
+//   //     formData.append('avatar', e.target.files[0]);
+//   //     axios.patch('/profile/', formData, {
+//   //       headers: {
+//   //         Authorization: `Bearer ${token}`,
+//   //         'Content-Type': 'multipart/form-data',
+//   //       },
+//   //     });
+//   //   }
+//   // };
+
 //   const handleUpdate = async (e: React.FormEvent) => {
 //     e.preventDefault();
 //     const token = localStorage.getItem('access');
+//     const form = new FormData();
+
+//     Object.entries(formData).forEach(([key, value]) => {
+//       if (value ! == null && value !== '') {
+//         form.append(key, value);
+//       }
+//     });
+
 //     try {
 //       const res = await axios.patch('/profile/', formData, {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 
-//       const updated = await axios.get('/profile/', {
-//       headers: { Authorization: `Bearer ${token}` },
-//     });
-
-//       setProfile(updated.data);
-//       setFormData({
-//         first_name: updated.data.first_name || '',
-//         last_name: updated.data.last_name || '',
-//         gender: updated.data.gender || '',
-//         religion: updated.data.religion || '',
-//         language: updated.data.language || '',
-//         bio: updated.data.bio || '',
-//       });
-
-//       setIsEditing(false);
+//       setProfile(res.data);
 //       setMessage('✅ Profile updated successfully!');
-//       setTimeout(() =>{
-//         setMessage('');
-//       }, 3000)
-//     } catch {
-//       setMessage('❌ Failed to update profile.');
+//       setError('');
+
+//       // Smooth fade-out after 3 seconds
+//       setTimeout(() => setIsFading(true), 2500);
 //       setTimeout(() => {
 //         setMessage('');
-//       }, 3000);
+//         setIsFading(false);
+//       }, 3500);
+//     } catch {
+//       setError('❌ Failed to update profile.');
+//       setTimeout(() => setError(''), 3000);
 //     }
 //   };
+
+//   const handleLogout = () => {
+//     localStorage.removeItem('access');
+//     localStorage.removeItem('refresh');
+//     window.location.href = '/login';
+//   };
+
 
 //   if (!profile) {
 //     return (
@@ -98,109 +126,143 @@
 //   }
 
 //   return (
-//     <div className="min-h-screen bg-gray-50 text-gray-800">
+//     <div className="min-h-screen bg-gray-100 text-gray-800">
 //       <Navbar />
 
-//       <div className="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-2xl shadow-md border border-gray-200">
-//         <h1 className="text-3xl font-semibold mb-6 text-gray-900 border-b pb-3">
-//           My Profile
-//         </h1>
+//       <div className="max-w-6xl mx-auto mt-10 bg-white shadow-md rounded-xl flex flex-col md:flex-row border border-gray-200 overflow-hidden">
+//         {/* Sidebar */}
+//         <aside className="md:w-1/3 bg-gray-50 p-6 border-b md:border-b-0 md:border-r">
+//           <div className="flex flex-col items-center">
+//             <img
+//               src={profile.avatar || 'https://via.placeholder.com/100'}
+//               alt="User avatar"
+//               className="w-24 h-24 rounded-full border mb-3 object-cover"
+//             />
+//             <h2 className="text-lg font-semibold capitalize">
+//               {profile.first_name} {profile.last_name}
+//             </h2>
+//             <p className="text-sm text-gray-500">{profile.email}</p>
+//           </div>
 
-//         {message && <p className="text-green-600 mb-3 font-medium">{message}</p>}
-//         {error && <p className="text-red-500 mb-3 font-medium">{error}</p>}
+//           <nav className="mt-8 space-y-3 w-full">
+//             <button className="w-full text-left px-4 py-2 bg-blue-600 text-white rounded-md font-medium">
+//               Account Details
+//             </button>
+//             <button
+//               onClick={() => (window.location.href = '/change-password')}
+//               className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded-md">
+//               Change Password
+//             </button>
+//             <button
+//               onClick={handleLogout}
+//               className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded-md">
+//               Logout
+//             </button>
+//           </nav>
+//         </aside>
 
-//         {!isEditing ? (
-//           <div className="space-y-3 text-gray-700 leading-relaxed">
-//             <p><strong className="text-gray-900">First Name:</strong> {profile.first_name || '-'}</p>
-//             <p><strong className="text-gray-900">Last Name:</strong> {profile.last_name || '-'}</p>
-//             <p><strong className="text-gray-900">Gender:</strong> {profile.gender || '-'}</p>
-//             <p><strong className="text-gray-900">Religion:</strong> {profile.religion || '-'}</p>
-//             <p><strong className="text-gray-900">Language:</strong> {profile.language || '-'}</p>
-//             <p><strong className="text-gray-900">Bio:</strong> {profile.bio || '-'}</p>
+//         {/* Main Content */}
+//         <main className="flex-1 px-6 py-8">
+//           <h1 className="text-2xl font-bold mb-6 text-gray-900 border-b pb-3">
+//             Account Settings
+//           </h1>
+
+//           {/* Success Message */}
+//           {message && (
+//             <p
+//               className={`text-green-600 mb-4 font-medium transition-opacity duration-700 ${
+//                 isFading ? 'opacity-0' : 'opacity-100'
+//               }`}
+//             >
+//               {message}
+//             </p>
+//           )}
+//           {error && (
+//             <p className="text-red-500 mb-4 font-medium transition-opacity duration-500">
+//               {error}
+//             </p>
+//           )}
+
+//           <form onSubmit={handleUpdate} className="space-y-5">
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+//               <div>
+//                 <label className="block text-sm font-medium mb-1">First name</label>
+//                 <input
+//                   type="text"
+//                   name="first_name"
+//                   value={formData.first_name}
+//                   onChange={handleChange}
+//                   className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 outline-none"
+//                 />
+//               </div>
+//               <div>
+//                 <label className="block text-sm font-medium mb-1">Last name</label>
+//                 <input
+//                   type="text"
+//                   name="last_name"
+//                   value={formData.last_name}
+//                   onChange={handleChange}
+//                   className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 outline-none"
+//                 />
+//               </div>
+//             </div>
+
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Gender</label>
+//               <select
+//                 name="gender"
+//                 value={formData.gender}
+//                 onChange={handleChange}
+//                 className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 outline-none"
+//               >
+//                 <option value="">Select Gender</option>
+//                 <option value="male">Male</option>
+//                 <option value="female">Female</option>
+//                 <option value="other">Other</option>
+//               </select>
+//             </div>
+
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+//               <div>
+//                 <label className="block text-sm font-medium mb-1">Religion</label>
+//                 <input
+//                   type="text"
+//                   name="religion"
+//                   value={formData.religion}
+//                   onChange={handleChange}
+//                   className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 outline-none"
+//                 />
+//               </div>
+//               <div>
+//                 <label className="block text-sm font-medium mb-1">Language</label>
+//                 <input
+//                   type="text"
+//                   name="language"
+//                   value={formData.language}
+//                   onChange={handleChange}
+//                   className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 outline-none"
+//                 />
+//               </div>
+//             </div>
+
+//             <div>
+//               <label className="block text-sm font-medium mb-1">Bio</label>
+//               <textarea
+//                 name="bio"
+//                 value={formData.bio}
+//                 onChange={handleChange}
+//                 className="w-full border border-gray-300 rounded-md p-2 h-24 focus:ring-2 focus:ring-blue-500 outline-none"
+//               />
+//             </div>
 
 //             <button
-//               onClick={() => setIsEditing(true)}
-//               className="mt-6 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
+//               type="submit"
+//               className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition"
 //             >
-//               Edit Profile
+//               Save Changes
 //             </button>
-//           </div>
-//         ) : (
-//           <form onSubmit={handleUpdate} className="space-y-4">
-//             <div className="grid grid-cols-2 gap-4">
-//               <input
-//                 type="text"
-//                 name="first_name"
-//                 value={formData.first_name}
-//                 onChange={handleChange}
-//                 placeholder="First Name"
-//                 className="border border-gray-300 rounded-lg p-2 w-full text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
-//               />
-//               <input
-//                 type="text"
-//                 name="last_name"
-//                 value={formData.last_name}
-//                 onChange={handleChange}
-//                 placeholder="Last Name"
-//                 className="border border-gray-300 rounded-lg p-2 w-full text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
-//               />
-//             </div>
-
-//             <select
-//               name="gender"
-//               value={formData.gender}
-//               onChange={handleChange}
-//               className="border border-gray-300 rounded-lg p-2 w-full text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
-//             >
-//               <option value="">Select Gender</option>
-//               <option value="male">Male</option>
-//               <option value="female">Female</option>
-//               <option value="other">Other</option>
-//             </select>
-
-//             <input
-//               type="text"
-//               name="religion"
-//               value={formData.religion}
-//               onChange={handleChange}
-//               placeholder="Religion"
-//               className="border border-gray-300 rounded-lg p-2 w-full text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
-//             />
-
-//             <input
-//               type="text"
-//               name="language"
-//               value={formData.language}
-//               onChange={handleChange}
-//               placeholder="Language"
-//               className="border border-gray-300 rounded-lg p-2 w-full text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
-//             />
-
-//             <textarea
-//               name="bio"
-//               value={formData.bio}
-//               onChange={handleChange}
-//               placeholder="Write your bio..."
-//               className="border border-gray-300 rounded-lg p-2 w-full h-24 text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
-//             />
-
-//             <div className="flex gap-3">
-//               <button
-//                 type="submit"
-//                 className="px-5 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition"
-//               >
-//                 Save Changes
-//               </button>
-//               <button
-//                 type="button"
-//                 onClick={() => setIsEditing(false)}
-//                 className="px-5 py-2 bg-gray-300 text-gray-800 font-medium rounded-lg hover:bg-gray-400 transition"
-//               >
-//                 Cancel
-//               </button>
-//             </div>
 //           </form>
-//         )}
+//         </main>
 //       </div>
 //     </div>
 //   );
@@ -218,6 +280,7 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [preview, setPreview] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     first_name: '',
@@ -226,13 +289,14 @@ export default function ProfilePage() {
     religion: '',
     language: '',
     bio: '',
+    avatar: null as File | null,
   });
 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('access');
       if (!token) {
-        setMessage('You must be logged in to view your profile.');
+        window.location.href = '/login';
         return;
       }
 
@@ -248,6 +312,7 @@ export default function ProfilePage() {
           religion: res.data.religion || '',
           language: res.data.language || '',
           bio: res.data.bio || '',
+          avatar: null,
         });
       } catch {
         setError('Failed to fetch profile.');
@@ -262,24 +327,52 @@ export default function ProfilePage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // ✅ Avatar preview handler
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFormData({ ...formData, avatar: file });
+      setPreview(URL.createObjectURL(file)); // for live preview
+    }
+  };
+
+  // ✅ Update Profile
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('access');
+    const form = new FormData();
+
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== null && value !== '') {
+        form.append(key, value);
+      }
+    });
+
     try {
-      const res = await axios.patch('/profile/', formData, {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await axios.patch('/profile/', form, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       setProfile(res.data);
-      setIsEditing(false);
       setMessage('✅ Profile updated successfully!');
+      setIsEditing(false);
+      setPreview(null);
 
-      // Hide message after 3 seconds
+      // hide message after 3s
       setTimeout(() => setMessage(''), 3000);
     } catch {
       setMessage('❌ Failed to update profile.');
       setTimeout(() => setMessage(''), 3000);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    window.location.href = '/login';
   };
 
   if (!profile) {
@@ -300,29 +393,49 @@ export default function ProfilePage() {
         <aside className="w-1/4 bg-gray-50 p-6 border-r rounded-l-xl">
           <div className="flex flex-col items-center">
             <img
-              src="https://via.placeholder.com/80"
-              alt="User avatar"
-              className="w-20 h-20 rounded-full border mb-4"
+              src={preview || profile.avatar || 'https://via.placeholder.com/80'}
+              alt="profile"
+              className="w-20 h-20 rounded-full border mb-4 object-cover"
             />
-            <h2 className="text-lg font-semibold">{profile.username}</h2>
+            <label
+              htmlFor="avatar"
+              className="cursor-pointer bg-blue-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 transition"
+            >
+              Change Photo
+            </label>
+            <input
+              id="avatar"
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+              className="hidden"
+            />
+
+            <h2 className="text-lg font-semibold mt-3">{profile.username}</h2>
             <p className="text-sm text-gray-500">{profile.email}</p>
           </div>
 
-          <nav className="mt-8 space-y-3 w-full">
+          <nav className="space-y-3 mt-6">
             <button className="w-full text-left px-4 py-2 bg-blue-600 text-white rounded-md font-medium">
               Account Details
             </button>
-            <button className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded-md">
+            <a
+              href="/change-password"
+              className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded-md"
+            >
               Change Password
-            </button>
-            <button className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded-md">
+            </a>
+            <button
+              onClick={handleLogout}
+              className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded-md"
+            >
               Logout
             </button>
           </nav>
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 p-8">
+        <main className="flex-1 px-10 p-8">
           <h1 className="text-2xl font-bold mb-6 text-gray-900 border-b pb-3">
             Account Settings
           </h1>
@@ -412,7 +525,7 @@ export default function ProfilePage() {
               Save Changes
             </button>
           </form>
-        </div>
+        </main>
       </div>
     </div>
   );
