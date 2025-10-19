@@ -206,6 +206,7 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
 }
 
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1440),  
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     
