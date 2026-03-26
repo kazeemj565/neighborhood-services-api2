@@ -1,13 +1,33 @@
 # 🏘️ Neighborhood Services API
 
 ## 📌 Overview
-The **Neighborhood Services API** is a RESTful backend system built with Django REST Framework that connects users with local service providers such as electricians, plumbers, tutors, and cleaners.
+The **Neighborhood Services API** is a full-stack web application designed to connect users with local service providers such as electricians, plumbers, tutors, and cleaners.
 
-It is designed as a scalable digital platform that enables communities to discover and offer services efficiently, while ensuring secure authentication and structured data management.
+The system consists of:
+- A **Django REST Framework backend** that handles business logic, authentication, and data management
+- A **React (Next.js) frontend** that provides a user-friendly interface for interacting with the platform
 
-This project focuses on backend architecture, API design, and real-world problem-solving.
+The goal of this project is to build a scalable, secure, and maintainable system that supports real-world service discovery within local communities.
 
----
+## 🌐 Frontend Integration (Full-Stack)
+
+In addition to the backend API, this project is being integrated with a frontend application built using React (Next.js).
+
+The frontend is designed to provide an intuitive user interface that interacts with the API for real-time data operations.
+
+### Frontend Features
+- User authentication (login/register UI)
+- Service browsing and search interface
+- Service creation and management dashboard
+- Favorites and reviews interaction
+- Responsive and clean UI design
+
+### Integration Approach
+- REST API consumption using HTTP requests (Axios / Fetch)
+- Token-based authentication using JWT
+- Separation of concerns between frontend and backend
+
+> Note: The frontend is currently under development and actively being integrated with the backend API.
 
 ## 🚀 Key Features
 
@@ -59,19 +79,20 @@ This project focuses on backend architecture, API design, and real-world problem
 ---
 
 ## 📁 Project Structure
-
+ 
 
 neighborhood-services-api/
 │
-├── users/ # Authentication & user profiles
-├── services/ # Service listing logic
-├── categories/ # Service categories
-├── reviews/ # Reviews and ratings
-├── favorites/ # Favorites system
-├── manage.py
+├── backend/
+│ ├── users/
+│ ├── services/
+│ ├── categories/
+│ ├── reviews/
+│ ├── favorites/
+│  ├── manage.py
+├── frontend/ # React / Next.js app
+│
 └── README.md
-
-
 ---
 
 ## ⚙️ Setup Instructions
