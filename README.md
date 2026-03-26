@@ -161,4 +161,4 @@ Kazeem Jamiu Shina
 Backend Developer
 
 GitHub: https://github.com/kazeemj565
-LinkedIn: (Add your LinkedIn link)
+LinkedIn: https://github.com/kazeemj565
